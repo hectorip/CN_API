@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.contrib import algoliasearch
 from .index import ColorIndex
-    
+
 
 class ApiConfig(AppConfig):
     name = 'api'
