@@ -11,3 +11,12 @@ class Color(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ColorPalette(models.Model):
+    name = models.CharField(unique=True, max_length=140)
+    description = models.CharField(max_length=500)
+    colors = models.ManyToManyField(Color)
+
+    def __str__(self):
+        return self.name
