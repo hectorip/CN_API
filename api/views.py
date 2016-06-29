@@ -7,9 +7,6 @@ import json
 from rest_framework import viewsets
 from .models import Color
 from .serializers import ColorSerializer
-# Create your views here.
-
-# Esto es un Viewset
 
 
 class ColorViewSet(viewsets.ModelViewSet):
@@ -22,8 +19,10 @@ class DisplayColors(View):
         template_name = 'api/display_advanced.html'
         return render(request, template_name)
 
+
 class SearchColors(TemplateView):
     template_name = 'api/search.html'
+
 
 def index(request):
     return HttpResponse("INDEX")
@@ -35,25 +34,27 @@ class HomeView(View):
         response.content_type = 'application/json'
         return response
 
+
 class IndexView(View):
 
     def get(self, request):
         get_params = request.GET
-   
-        nombre= get_params.get("nombre", "Fulano")
+
+        nombre = get_params.get("nombre", "Fulano")
         # print(dir(request))
         return HttpResponse("<h1>Hola " + nombre + "<h1>")
 
     @method_decorator(csrf_exempt)
     def post(self, request):
         get_params = request.POST
-        nombre= get_params.get("nombre", "Fulano")
+        nombre = get_params.get("nombre", "Fulano")
         return HttpResponse("Método POST llamado por" + nombre)
 
 
 class GreetView(View):
     def get(self, request, nombre, apellido):
         return HttpResponse("<h1> Hola " + nombre + " " + apellido + " <h1>")
+
 
 class JsonView(View):
     """
@@ -67,13 +68,8 @@ class JsonView(View):
             """, content_type='application/json')
 
     def post(self, request, color):
-        colores = {
-            'rojo': '#FF0000',
-            'azul': '#0000FF'
-        }
-
         my_json = {
-            'colors' : [
+            'colors': [
                 '#000000',
                 '#FFFFFF',
                 '#FF0000',
@@ -87,7 +83,7 @@ class JsonView(View):
         print(myobject)
         my_json["colors"].append(color)
 
-        return HttpResponse(json.dumps(my_json), content_type='application/json' )
+        return HttpResponse(json.dumps(my_json), content_type='application/json')
 
 
 class ColorView(View):
@@ -95,17 +91,26 @@ class ColorView(View):
         'rojo': '#FF0000',
         'azul': '#0000FF'
     }
+
     def get(self, request, color):
         hex = self.colores.get(color)
+
         if hex:
-            resp = { 'status': 'ok', 'hex': hex }
+            resp = {
+                'status': 'ok',
+                'hex': hex
+            }
         else:
-            resp = { 'status': 'error', 'message': 'Color not available'}
+            resp = {
+                'status': 'error',
+                'message': 'Color not available'
+                }
 
         return HttpResponse(json.dumps(resp), content_type='application/json')
 
 
 class ColorV(View):
+
     def get(self, request):
-        colors = Models.Colors.objects.all()
+        colors = Color.objects.all()
         return colors
